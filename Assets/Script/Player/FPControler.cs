@@ -1,7 +1,11 @@
-using UnityEngine;
-using Unity.Cinemachine;
+using System.ComponentModel;
 using System.Linq;
+using Unity.Cinemachine;
+using Unity.Collections;
+using UnityEditor.Experimental.GraphView;
+using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UIElements;
 
 namespace Player
 {
@@ -78,7 +82,14 @@ namespace Player
 
         public bool isGrounded => controller.isGrounded;
         private bool wasGrounded = false;
-        
+
+        [Header("Climbing")]
+        public LayerMask wallMask;
+        [SerializeField] bool facingWall,isClimbing;
+        public float climbTimer, climbMaxTimer;
+
+        [Header("Detection")]
+        [SerializeField] private float rayLength;
 
         #region Unity Methods
         private void OnValidate()
@@ -93,6 +104,8 @@ namespace Player
             MoveUpdate();
             LookUpdate();
             CameraUpdate();
+            CheckWall();
+            StateMachine();
             if(!wasGrounded && isGrounded)
             {
                 timesJumped = 0;
@@ -105,17 +118,58 @@ namespace Player
         #region Controller Methods
         public void TryJump()
         {
-            if (!isGrounded )
+            if (!isGrounded)
             {
                 if(!canDoubleJump || timesJumped >= 2)
                 {
                     return;
                 }
             }
-            
-            verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * Physics.gravity.y * gravityScale);
+            if (facingWall)
+            {
+                Climbing();
+                return;
+            }
+
+                verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * Physics.gravity.y * gravityScale);
             timesJumped++;
         }
+        #region Wall Climbing
+        private void CheckWall()
+        {
+            Vector3 localPos = new Vector3(transform.position.x, transform.position.y + 1, transform.position.z);
+            facingWall = Physics.Raycast(localPos, transform.forward, rayLength, wallMask);
+        }
+        private void StartClimb()
+        {
+            isClimbing = true;
+            timesJumped = 1;
+        }
+        private void Climbing()
+        {
+            verticalVelocity = 9;
+            
+        }
+        private void StopClimb()
+        {
+            isClimbing = false;
+        }
+        private void StateMachine()
+        {
+            if(facingWall && moveInput.x >= 0.01f)
+            {
+                if (!isClimbing && climbTimer > 0) StartClimb();
+
+                if(climbTimer > 0) climbTimer -= Time.deltaTime;
+                if(climbTimer < 0) StopClimb();
+            }
+            else
+            {
+                if (isClimbing) StopClimb();
+            }
+        }
+        #endregion
+
         private void MoveUpdate()
         {
             Vector3 motion = transform.forward * moveInput.y + transform.right * moveInput.x;
@@ -132,11 +186,11 @@ namespace Player
             }
 
 
-            if (isGrounded && verticalVelocity <= .01f)
+            if (isGrounded && verticalVelocity <= .01f && !facingWall)
             {
                 verticalVelocity = -3f;
             }
-            else
+            else if(!facingWall)
             {
                 verticalVelocity += Physics.gravity.y * gravityScale * Time.deltaTime;
             }
@@ -179,4 +233,5 @@ namespace Player
         }
         #endregion
     }
+
 }
