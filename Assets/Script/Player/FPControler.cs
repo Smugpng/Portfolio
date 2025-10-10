@@ -53,6 +53,7 @@ namespace Player
         [Header("Input")]
         public Vector2 moveInput, lookInput;
         public bool isSprinting;
+        public bool isJumping;
 
         [Header("Components")]
         [SerializeField] CinemachineCamera fpCamera;
@@ -64,6 +65,7 @@ namespace Player
         [Header("Camera Param")]
         public float baseFov = 90f, maxFov = 110f;
         public float cameraFovSmoothing = 1f;
+        [SerializeField] private CameraStuff camShake;
          float currentFov
         {
             get
@@ -106,9 +108,15 @@ namespace Player
             CameraUpdate();
             CheckWall();
             StateMachine();
+            if(isClimbing) Climbing();
             if(!wasGrounded && isGrounded)
             {
+                if(verticalVelocity < -20)
+                {
+                    camShake.ScreeShake();
+                }
                 timesJumped = 0;
+                ClimbReset();
                 Landed?.Invoke();
             }
             wasGrounded = isGrounded;
@@ -125,13 +133,7 @@ namespace Player
                     return;
                 }
             }
-            if (facingWall)
-            {
-                Climbing();
-                return;
-            }
-
-                verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * Physics.gravity.y * gravityScale);
+            verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * Physics.gravity.y * gravityScale);
             timesJumped++;
         }
         #region Wall Climbing
@@ -150,22 +152,34 @@ namespace Player
             verticalVelocity = 9;
             
         }
+        private void StopDelay()
+        {
+            verticalVelocity = 2f;
+            Invoke("StopClimb", .3f);
+        }
         private void StopClimb()
         {
             isClimbing = false;
+            verticalVelocity = -3f;
+        }
+        private void ClimbReset()
+        {
+            climbTimer = climbMaxTimer;
         }
         private void StateMachine()
         {
-            if(facingWall && moveInput.x >= 0.01f)
+            if(facingWall && isJumping)
             {
-                if (!isClimbing && climbTimer > 0) StartClimb();
-
-                if(climbTimer > 0) climbTimer -= Time.deltaTime;
-                if(climbTimer < 0) StopClimb();
+                if (!isClimbing && climbTimer > 0) 
+                { 
+                    StartClimb(); 
+                }
+                if (climbTimer > 0) climbTimer -= Time.deltaTime;
+                if (climbTimer < 0) StopDelay();
             }
             else
             {
-                if (isClimbing) StopClimb();
+                if (isClimbing) StopDelay();
             }
         }
         #endregion

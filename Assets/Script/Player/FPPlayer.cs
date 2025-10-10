@@ -24,6 +24,7 @@ namespace Player
         }
         void OnJump(InputValue value)
         {
+            FPControler.isJumping = value.isPressed;
             if (value.isPressed)
             {
                 FPControler.TryJump();
