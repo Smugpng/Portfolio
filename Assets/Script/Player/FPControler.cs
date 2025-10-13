@@ -13,6 +13,7 @@ namespace Player
     public class FPControler : MonoBehaviour
     {
         [Header("Movement Param")]
+
         public float maxSpeed => isSprinting ? sprintSpeed : walkSpeed;
         public float acceleration = 15f;
 
@@ -63,7 +64,7 @@ namespace Player
         public UnityEvent Landed;
 
         [Header("Camera Param")]
-        public float baseFov = 90f, maxFov = 110f;
+        [Range(60,120)] public float baseFov = 90f, maxFov = 110f;
         public float cameraFovSmoothing = 1f;
         [SerializeField] private CameraStuff camShake;
          float currentFov
@@ -108,7 +109,7 @@ namespace Player
             CameraUpdate();
             CheckWall();
             StateMachine();
-            if(isClimbing) Climbing();
+            if(isClimbing && climbTimer > 0) Climbing();
             if(!wasGrounded && isGrounded)
             {
                 if(verticalVelocity < -20)
@@ -124,7 +125,7 @@ namespace Player
 
         #endregion
         #region Controller Methods
-        public void TryJump()
+        public void TryJump() //On button press check if I can jump. If I can add to my vert vel
         {
             if (!isGrounded)
             {
@@ -137,30 +138,25 @@ namespace Player
             timesJumped++;
         }
         #region Wall Climbing
-        private void CheckWall()
+        private void CheckWall() //Constant Check if facing wall
         {
             Vector3 localPos = new Vector3(transform.position.x, transform.position.y + 1, transform.position.z);
             facingWall = Physics.Raycast(localPos, transform.forward, rayLength, wallMask);
         }
+        
         private void StartClimb()
         {
             isClimbing = true;
-            timesJumped = 1;
         }
         private void Climbing()
         {
             verticalVelocity = 9;
-            
         }
-        private void StopDelay()
-        {
-            verticalVelocity = 2f;
-            Invoke("StopClimb", .3f);
-        }
-        private void StopClimb()
+
+        private void StopClimb() //On climb stop give a little boost
         {
             isClimbing = false;
-            verticalVelocity = -3f;
+            verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * Physics.gravity.y * gravityScale);
         }
         private void ClimbReset()
         {
@@ -174,12 +170,12 @@ namespace Player
                 { 
                     StartClimb(); 
                 }
-                if (climbTimer > 0) climbTimer -= Time.deltaTime;
-                if (climbTimer < 0) StopDelay();
+                if (climbTimer > 0 && isClimbing) climbTimer -= Time.deltaTime;
+                if (climbTimer < 0 && isClimbing) StopClimb();
             }
             else
             {
-                if (isClimbing) StopDelay();
+                if(isClimbing) StopClimb();
             }
         }
         #endregion
@@ -208,8 +204,11 @@ namespace Player
             {
                 verticalVelocity += Physics.gravity.y * gravityScale * Time.deltaTime;
             }
-            
-
+            else if(facingWall && !isClimbing)
+            {
+                verticalVelocity += Physics.gravity.y * (gravityScale/2) * Time.deltaTime;
+            }
+ 
             Vector3 fullVelocity = new Vector3(currentVelcity.x,(verticalVelocity),currentVelcity.z);
 
 

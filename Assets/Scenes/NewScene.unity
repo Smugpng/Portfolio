@@ -491,8 +491,8 @@ MonoBehaviour:
     m_Bits: 64
   facingWall: 0
   isClimbing: 0
-  climbTimer: 2
-  climbMaxTimer: 2
+  climbTimer: 1
+  climbMaxTimer: 1
   rayLength: 2
 --- !u!114 &811419534
 MonoBehaviour:
