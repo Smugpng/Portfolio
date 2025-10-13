@@ -30,6 +30,10 @@ namespace Player
                 FPControler.TryJump();
             }
         }
+        void OnZoom(InputValue value)
+        {
+
+        }
         #endregion
 
         #region Unity Methods
