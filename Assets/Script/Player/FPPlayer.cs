@@ -4,10 +4,12 @@ using UnityEngine.InputSystem;
 namespace Player
 {
     [RequireComponent(typeof(FPControler))]
+    [RequireComponent(typeof(FPInteraction))]
     public class FPPlayer : MonoBehaviour
     {
         [Header("Components")]
         [SerializeField] FPControler FPControler;
+        [SerializeField] FPInteraction FPInteraction;
 
         #region Input
         void OnMove(InputValue value)
@@ -30,9 +32,9 @@ namespace Player
                 FPControler.TryJump();
             }
         }
-        void OnZoom(InputValue value)
+        void OnInteract(InputValue value)
         {
-
+            FPInteraction.isInteracting = value.isPressed;
         }
         #endregion
 
@@ -40,6 +42,7 @@ namespace Player
         private void OnValidate()
         {
             if (FPControler == null) FPControler = GetComponent<FPControler>();
+            if (FPInteraction == null) FPInteraction = GetComponent<FPInteraction>();
         }
         private void Start()
         {

@@ -12,6 +12,9 @@ namespace Player
     [RequireComponent(typeof(CharacterController))]
     public class FPControler : MonoBehaviour
     {
+        public static FPControler instance;
+        public bool isStunned = false;
+
         [Header("Movement Param")]
 
         public float maxSpeed => isSprinting ? sprintSpeed : walkSpeed;
@@ -95,6 +98,13 @@ namespace Player
         [SerializeField] private float rayLength;
 
         #region Unity Methods
+        private void Awake()
+        {
+            if (instance == null)
+            {
+                instance = this;
+            }
+        }
         private void OnValidate()
         {
             if(controller == null)
@@ -104,6 +114,7 @@ namespace Player
         }
         private void Update()
         {
+            if(isStunned) { return; }
             MoveUpdate();
             LookUpdate();
             CameraUpdate();
