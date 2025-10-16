@@ -7,7 +7,9 @@ public class TV : MonoBehaviour, IInteractable
 
     [SerializeField] private string prompt;
     [SerializeField] private CinemachineCamera cam;
+    [SerializeField] private GameObject position;
     public string InteractionPromp => prompt;
+    public Transform UIPosition => position.transform;
 
     public bool Disengage(FPInteraction interactor)
     {

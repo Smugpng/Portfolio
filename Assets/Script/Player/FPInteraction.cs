@@ -16,10 +16,17 @@ public class FPInteraction : MonoBehaviour
         numFound = Physics.OverlapSphereNonAlloc(interationPoint.position, interationRad, colliders, interactionMask);
         if (numFound > 0)
         {
+            
             var interactable = colliders[0].GetComponent<IInteractable>();
+            if (canInteract)
+            {
+                FPInterationUI.instance.SetUp(interactable.UIPosition, interactable.InteractionPromp);
+            }
+            
 
             if (interactable != null && isInteracting && cuurentInteraction == null && canInteract )
             {
+                FPInterationUI.instance.HideUI();
                 InteractionDelay();
                 interactable.Interact(this);
                 cuurentInteraction = interactable.Test();
@@ -30,6 +37,10 @@ public class FPInteraction : MonoBehaviour
                 interactable.Disengage(this);
                 cuurentInteraction = null;
             }
+        }
+        else
+        {
+            FPInterationUI.instance.HideUI();
         }
     }
     public void InteractionDelay()
