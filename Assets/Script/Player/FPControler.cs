@@ -65,6 +65,7 @@ namespace Player
 
         [Header("Events")]
         public UnityEvent Landed;
+        private bool isDisabled;
 
         [Header("Camera Param")]
         [Range(60,120)] public float baseFov = 90f, maxFov = 110f;
@@ -193,9 +194,11 @@ namespace Player
 
         private void MoveUpdate()
         {
+            if(isDisabled) return;
             Vector3 motion = transform.forward * moveInput.y + transform.right * moveInput.x;
             motion.y = 0f;
             motion.Normalize();
+            
 
             if(motion.sqrMagnitude >= 0.01f )
             {
@@ -234,6 +237,7 @@ namespace Player
         }
         private void LookUpdate()
         {
+            if (isDisabled) return;
             Vector2 input = new Vector2(lookInput.x * lookSens.x, lookInput.y * lookSens.y);
 
             // handles up and down
@@ -242,6 +246,17 @@ namespace Player
 
             //handles side to side
             transform.Rotate(Vector3.up * input.x);
+        }
+
+        public void FastTravel(GameObject Location)
+        {
+            isDisabled = true;
+            gameObject.transform.position = Location.transform.position;
+            Invoke("Enable", 2f);
+        }
+        private void Enable()
+        {
+            isDisabled = false;
         }
         #endregion
         #region Camera

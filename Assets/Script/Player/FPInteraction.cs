@@ -9,7 +9,7 @@ public class FPInteraction : MonoBehaviour
     private readonly Collider[] colliders = new Collider[3];
     [SerializeField] private int numFound;
     public bool isInteracting;
-    [SerializeField] private GameObject cuurentInteraction;
+     public GameObject currentInteraction;
     [SerializeField] private bool canInteract = true;
     private void Update()
     {
@@ -24,18 +24,18 @@ public class FPInteraction : MonoBehaviour
             }
             
 
-            if (interactable != null && isInteracting && cuurentInteraction == null && canInteract )
+            if (interactable != null && isInteracting && currentInteraction == null && canInteract )
             {
                 FPInterationUI.instance.HideUI();
                 InteractionDelay();
                 interactable.Interact(this);
-                cuurentInteraction = interactable.Test();
+                currentInteraction = interactable.Test();
             }
-            else if(interactable != null && cuurentInteraction != null && isInteracting && canInteract)
+            else if(interactable != null && currentInteraction != null && isInteracting && canInteract)
             {
                 InteractionDelay();
                 interactable.Disengage(this);
-                cuurentInteraction = null;
+                currentInteraction = null;
             }
         }
         else
