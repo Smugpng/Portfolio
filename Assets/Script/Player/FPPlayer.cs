@@ -36,6 +36,11 @@ namespace Player
         {
             FPInteraction.isInteracting = value.isPressed;
         }
+        void OnPause(InputValue value)
+        {
+
+        }
+
         #endregion
 
         #region Unity Methods

@@ -43,8 +43,8 @@ public class FPInterationUI : MonoBehaviour
     }
     public void HideUI()
     {
-        canvasGroup.alpha = 0f;
         transform.position = new Vector3(0,0,0);
         text.text = null;
+        canvasGroup.alpha = 0f;
     }
 }
