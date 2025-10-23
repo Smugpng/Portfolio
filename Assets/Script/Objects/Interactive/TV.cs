@@ -36,6 +36,11 @@ public class TV : MonoBehaviour, IInteractable
         current = interactor;
         return true;
     }
+    public bool Next(FPInteraction interactor)
+    {
+        Disengage(interactor);
+        return true;
+    }
     public GameObject Test()
     {
         return this.gameObject;
@@ -51,4 +56,5 @@ public class TV : MonoBehaviour, IInteractable
         EventSystem.current.SetSelectedGameObject(null);
     }
 
+    
 }

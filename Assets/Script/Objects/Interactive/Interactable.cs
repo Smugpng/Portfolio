@@ -7,5 +7,7 @@ public interface IInteractable
     public bool Interact(FPInteraction interactor);
     public bool Disengage(FPInteraction interactor);
 
+    public bool Next(FPInteraction interactor);
+
     public GameObject Test();
 }

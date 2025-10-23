@@ -42,11 +42,17 @@ public class NPC : MonoBehaviour, IInteractable
             currLine++;
         }
     }
+    public bool Next(FPInteraction interactor)
+    {
+        Talk();
+        Debug.Log("TALKING");
+        return true;
+    }
 
     public GameObject Test()
     {
         return this.gameObject;
     }
 
-   
+    
 }

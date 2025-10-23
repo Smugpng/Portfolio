@@ -34,8 +34,9 @@ public class FPInteraction : MonoBehaviour
             else if(interactable != null && currentInteraction != null && isInteracting && canInteract)
             {
                 InteractionDelay();
-                interactable.Disengage(this);
+                interactable.Next(this);
                 currentInteraction = null;
+                FPInterationUI.instance.HideUI();
             }
         }
         else
@@ -46,7 +47,7 @@ public class FPInteraction : MonoBehaviour
     public void InteractionDelay()
     {
         canInteract = false;
-        Invoke("ResetInteraction", 2);
+        Invoke("ResetInteraction", 1);
     }
     public void ResetInteraction()
     {
