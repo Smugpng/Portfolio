@@ -65,7 +65,7 @@ namespace Player
 
         [Header("Events")]
         public UnityEvent Landed;
-        private bool isDisabled;
+        public bool isDisabled;
 
         [Header("Camera Param")]
         [Range(60,120)] public float baseFov = 90f, maxFov = 110f;

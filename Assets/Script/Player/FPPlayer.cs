@@ -5,11 +5,15 @@ namespace Player
 {
     [RequireComponent(typeof(FPControler))]
     [RequireComponent(typeof(FPInteraction))]
+    [RequireComponent (typeof(FPTeleport))]
     public class FPPlayer : MonoBehaviour
     {
         [Header("Components")]
         [SerializeField] FPControler FPControler;
         [SerializeField] FPInteraction FPInteraction;
+        [SerializeField] FPTeleport FPTeleport;
+
+        
 
         #region Input
         void OnMove(InputValue value)
@@ -40,6 +44,15 @@ namespace Player
         {
 
         }
+        void OnAim(InputValue value)
+        {
+            FPTeleport.isAiming = value.isPressed;
+        }
+        void OnAttack(InputValue value)
+        {
+            FPTeleport.Dash();
+            
+        }
 
         #endregion
 
@@ -48,6 +61,7 @@ namespace Player
         {
             if (FPControler == null) FPControler = GetComponent<FPControler>();
             if (FPInteraction == null) FPInteraction = GetComponent<FPInteraction>();
+            if(FPTeleport == null) FPTeleport = GetComponent<FPTeleport>();
         }
         private void Start()
         {
