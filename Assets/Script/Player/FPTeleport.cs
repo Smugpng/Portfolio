@@ -13,6 +13,7 @@ public class FPTeleport : MonoBehaviour
     public float teleportDistance = 25;
     public bool isAiming = false;
     [SerializeField] private LayerMask masks;
+    [SerializeField] private ParticleSystem warpingEffect;
 
     [Header("Balance")]
     [SerializeField] private float delay;
@@ -55,11 +56,13 @@ public class FPTeleport : MonoBehaviour
     }
     public IEnumerator DASH(Vector3 location)
     {
+        warpingEffect.Play();
         player.isDisabled = true;
         canDash = false;
         gameObject.transform.position = location;
         Invoke("ResetDash", delay);
         yield return new WaitForSeconds(.1f);
+        
         player.isDisabled = false;
     }
     public void ResetDash()
