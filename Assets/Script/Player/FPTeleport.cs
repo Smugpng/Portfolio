@@ -1,6 +1,7 @@
 using System.Collections;
 using Player;
 using UnityEngine;
+using UnityEngine.Events;
 using static UnityEditor.FilePathAttribute;
 
 public class FPTeleport : MonoBehaviour
@@ -18,6 +19,9 @@ public class FPTeleport : MonoBehaviour
     [Header("Balance")]
     [SerializeField] private float delay;
     private bool canDash = true;
+
+    [Header("Events")]
+    public UnityEvent Success,Failed;
     private void FixedUpdate()
     {
         if (canDash && isAiming)
@@ -33,6 +37,7 @@ public class FPTeleport : MonoBehaviour
             {
                 teleportVisual.transform.position = camPos + mainCam.transform.forward* teleportDistance;
             }
+            
         }
         else
         {
@@ -51,12 +56,13 @@ public class FPTeleport : MonoBehaviour
         }
         else
         {
-            //PlaySound
+            //Failed.Invoke();
         }
     }
     public IEnumerator DASH(Vector3 location)
     {
         warpingEffect.Play();
+        Success.Invoke();
         player.isDisabled = true;
         canDash = false;
         gameObject.transform.position = location;
