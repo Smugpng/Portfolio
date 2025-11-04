@@ -67,8 +67,9 @@ public class FPTeleport : MonoBehaviour
         canDash = false;
         gameObject.transform.position = location;
         Invoke("ResetDash", delay);
-        yield return new WaitForSeconds(.1f);
         
+        yield return new WaitForSeconds(.1f);
+        FPControler.instance.verticalVelocity = 0f;
         player.isDisabled = false;
     }
     public void ResetDash()

@@ -1,16 +1,25 @@
+using Player;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class OutOfWorld : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private void OnValidate()
+    {
+        if(player == null) player = FPControler.instance.gameObject;
+    }
     void Start()
     {
-        
+        InvokeRepeating(nameof(PlayerLocationCheck), 5, 15);   
     }
+    public GameObject player;
 
-    // Update is called once per frame
-    void Update()
+    void PlayerLocationCheck()
     {
-        
+        if(player.transform.position.y < this.transform.position.y)
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+        else Debug.Log("Player in safe Area");
     }
 }
