@@ -16,7 +16,7 @@ public class BasicAI : MonoBehaviour
     [Header("OBS Avoidance")]
     private Vector3 HitPoint;
     private bool obsInWay;
-    [SerializeField] private float timer;
+    [SerializeField] private float timer,maxTimer =10;
 
     private void Awake()
     {
@@ -54,7 +54,7 @@ public class BasicAI : MonoBehaviour
             }
             else
             {
-                if(timer <= 10)
+                if(timer <= maxTimer)
                 {
                     transform.LookAt(targetPos);
                     transform.position = Vector3.SmoothDamp(transform.position, targetPos, ref currentVel, smoothTime);
