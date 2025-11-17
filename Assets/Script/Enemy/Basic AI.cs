@@ -13,6 +13,11 @@ public class BasicAI : MonoBehaviour
     [SerializeField] private Vector3 currentVel;
     [SerializeField] private float smoothTime;
 
+    [Header("OBS Avoidance")]
+    private Vector3 HitPoint;
+    private bool obsInWay;
+    [SerializeField] private float timer;
+
     private void Awake()
     {
         minPos = min.transform.position;
@@ -21,17 +26,49 @@ public class BasicAI : MonoBehaviour
     }
     private void Update()
     {
+        //Avoidance Casting
+        /*
+        RaycastHit hit;
+        if (Physics.SphereCast(transform.position, 3f, transform.forward, out hit, wallMask))
+        {
+            Debug.LogWarning("Wall in Way!");
+            HitPoint = hit.point;
+            obsInWay = true;
+        }
+        else
+        {
+            HitPoint = this.transform.position;
+            obsInWay = false; 
+        }
+        if(obsInWay) transform.position = Vector3.MoveTowards(transform.position, HitPoint, -1 * smoothTime * Time.deltaTime);
+        */
+
         if (hasTarget)
         {
             float dist = Vector3.Distance(transform.position, targetPos);
             if(dist <= 2)
             {
                 hasTarget = false;
+                timer = 0;
                 Invoke("FindPosition", 2);
             }
             else
             {
-                transform.position = Vector3.SmoothDamp(transform.position, targetPos, ref currentVel, smoothTime);
+                if(timer <= 10)
+                {
+                    transform.LookAt(targetPos);
+                    transform.position = Vector3.SmoothDamp(transform.position, targetPos, ref currentVel, smoothTime);
+                    timer = timer + Time.deltaTime;
+                }
+                else
+                {
+                    hasTarget = false;
+                    timer = 0;
+                    Invoke("FindPosition", .5f);
+                    timer = 0;
+                }
+                
+
             }
         }
         else if(!hasTarget && !checking)
@@ -39,6 +76,8 @@ public class BasicAI : MonoBehaviour
             checking = true;
             Invoke("FindPosition", 2);
         }
+       
+
     }
     private void FindPosition()
     {
@@ -71,5 +110,6 @@ public class BasicAI : MonoBehaviour
         Gizmos.DrawSphere(targetPos, 4f);
         Gizmos.color = Color.red;
         Gizmos.DrawLine(transform.position, targetPos);
+        Gizmos.DrawSphere(HitPoint, 2f);
     }
 }
