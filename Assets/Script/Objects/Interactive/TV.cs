@@ -48,6 +48,7 @@ public class TV : MonoBehaviour, IInteractable
    
     public void FastTravel(int num)
     {
+        CameraFade.instance.FadeOut();
         FPControler.instance.FastTravel(fastTravelPoints[num]);
         cam.Priority = 1;
         FPControler.instance.isStunned = false;

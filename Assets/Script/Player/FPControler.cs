@@ -256,6 +256,7 @@ namespace Player
         }
         private void Enable()
         {
+            CameraFade.instance.FadeIn();
             isDisabled = false;
         }
         #endregion
