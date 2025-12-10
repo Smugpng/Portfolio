@@ -1,5 +1,6 @@
 using System.Collections;
 using Player;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.Events;
 using static UnityEditor.FilePathAttribute;
@@ -14,7 +15,8 @@ public class FPTeleport : MonoBehaviour
     public float teleportDistance = 25;
     public bool isAiming = false;
     [SerializeField] private LayerMask masks;
-    [SerializeField] private ParticleSystem warpingEffect;
+    [SerializeField] private CinemachineCamera FPCamera;
+    private bool isDashing;
 
     [Header("Balance")]
     [SerializeField] private float delay;
@@ -43,7 +45,10 @@ public class FPTeleport : MonoBehaviour
         {
             teleportVisual.SetActive(false);
         }
-
+        if (isDashing)
+        {
+            FPCamera.Lens.FieldOfView += 3.4f;
+        }
     }
 
     [SerializeField] private FPControler player;
@@ -52,6 +57,8 @@ public class FPTeleport : MonoBehaviour
         Vector3 location = teleportVisual.transform.position;
         if (canDash && isAiming)
         {
+            isDashing = true;
+            player.isDisabled = true;
             StartCoroutine(DASH(location));
         }
         else
@@ -61,21 +68,21 @@ public class FPTeleport : MonoBehaviour
     }
     public IEnumerator DASH(Vector3 location)
     {
-        warpingEffect.Play();
+        yield return new WaitForSeconds(.5f);
         Success.Invoke();
         player.isDisabled = true;
         canDash = false;
         gameObject.transform.position = location;
         Invoke("ResetDash", delay);
-        
         yield return new WaitForSeconds(.1f);
+        isDashing = false;
+        FPCamera.Lens.FieldOfView = 90;
         FPControler.instance.verticalVelocity = 0f;
         player.isDisabled = false;
     }
     public void ResetDash()
     {
         canDash = true;
-
     }
 }
 
