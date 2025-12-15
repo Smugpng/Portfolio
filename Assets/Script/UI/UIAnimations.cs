@@ -20,7 +20,11 @@ public class UIAnimations : MonoBehaviour
     {
         Debug.Log("HEOP");
         currentTransform = UIOBJ.GetComponent<RectTransform>();
-        startPos = currentTransform.localPosition;
+        if(startPos == (new Vector3(0, 0, 0)))
+        {
+            startPos = currentTransform.localPosition;
+        }
+        
         currentTransform.LeanMoveLocal(new Vector3(startPos.x, startPos.y + 40), .25f).setEaseInOutBack();
 
     }
@@ -33,7 +37,6 @@ public class UIAnimations : MonoBehaviour
     public void CLICK(GameObject UIOBJ)
     {
         LeanTween.scale(currentTransform, currentTransform.localScale*.9f,.25f).setEaseInOutBack().setOnComplete(Return);
-        //StartCoroutine(Click(UIOBJ));
     }
     public void Return()
     {
@@ -43,15 +46,7 @@ public class UIAnimations : MonoBehaviour
     {
         onClickEvent.Invoke();
     }
-    public void Drag()
-    {
-        currentTransform.LeanMoveLocal(Input.mousePosition, .25f).setEaseInOutBack();
-        //currentTransform.position = Input.mousePosition;
-    }
-    public void Drop()
-    {
-        //LeanTween.move(currentTransform,new Vector3(startPos.x, startPos.y), .25f).setEaseInOutBack();
-    }
+    
     private IEnumerator Click(GameObject UIOBJ)
     {
         SFXManager.instance.PlaySFX(buttonPress);
