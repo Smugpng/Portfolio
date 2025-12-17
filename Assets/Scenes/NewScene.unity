@@ -1429,6 +1429,7 @@ GameObject:
   - component: {fileID: 546198089}
   - component: {fileID: 546198090}
   - component: {fileID: 546198091}
+  - component: {fileID: 546198092}
   m_Layer: 0
   m_Name: FPCamera
   m_TagString: Untagged
@@ -1535,6 +1536,21 @@ MonoBehaviour:
     FrequencyGain: 1
     Duration: 1
     m_NoiseOffsets: {x: 545.1228, y: 720.16003, z: 824.23303}
+--- !u!114 &546198092
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 546198087}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19f72c6e223764742beff014013b7fd3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CameraWobble
+  noiseChannel: {fileID: 546198090}
+  horizontalState: 0
+  verticalState: 0
 --- !u!1 &547471581
 GameObject:
   m_ObjectHideFlags: 0

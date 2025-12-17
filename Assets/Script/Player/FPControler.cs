@@ -2,7 +2,6 @@ using System.ComponentModel;
 using System.Linq;
 using Unity.Cinemachine;
 using Unity.Collections;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
@@ -210,7 +209,7 @@ namespace Player
             }
 
 
-            if (isGrounded && verticalVelocity <= .01f && !facingWall)
+            if (isGrounded && verticalVelocity <= .01f && !facingWall) //Player is Grounded
             {
                 verticalVelocity = -3f;
             }

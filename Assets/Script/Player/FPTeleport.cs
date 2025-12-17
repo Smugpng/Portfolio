@@ -3,7 +3,6 @@ using Player;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.Events;
-using static UnityEditor.FilePathAttribute;
 
 public class FPTeleport : MonoBehaviour
 {
