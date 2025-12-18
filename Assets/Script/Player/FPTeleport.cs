@@ -51,7 +51,7 @@ public class FPTeleport : MonoBehaviour
     }
 
     [SerializeField] private FPControler player;
-    public void Dash()
+    public bool Dash()
     {
         Vector3 location = teleportVisual.transform.position;
         if (canDash && isAiming)
@@ -59,10 +59,12 @@ public class FPTeleport : MonoBehaviour
             isDashing = true;
             player.isDisabled = true;
             StartCoroutine(DASH(location));
+            return true;
         }
         else
         {
             //Failed.Invoke();
+            return false;
         }
     }
     public IEnumerator DASH(Vector3 location)

@@ -12,6 +12,8 @@ namespace Player
         [SerializeField] FPControler FPControler;
         [SerializeField] FPInteraction FPInteraction;
         [SerializeField] FPTeleport FPTeleport;
+        [Header("Weapon")]
+        [SerializeField] private IWeaponBase currentWeapon;
 
         
 
@@ -48,10 +50,25 @@ namespace Player
         {
             FPTeleport.isAiming = value.isPressed;
         }
-        void OnAttack(InputValue value)
+        void OnAttack(InputValue value) //Checks if dash is being aimed if not grapple instead
         {
-            FPTeleport.Dash();
-            
+            if (FPTeleport.Dash())
+            {
+
+            }
+            else
+            {
+                currentWeapon.Shoot();
+            }
+        }
+        void OnSwap(InputValue value)
+        {
+            currentWeapon = GetComponentInChildren<IWeaponBase>();
+            Debug.Log(currentWeapon.Name);
+        }
+        void OnReload(InputValue value)
+        {
+            currentWeapon.Reload();
         }
 
         #endregion
@@ -66,6 +83,7 @@ namespace Player
         private void Start()
         {
             CursorHide();
+            currentWeapon = GetComponentInChildren<IWeaponBase>();
         }
         #endregion
 
