@@ -99,8 +99,20 @@ public class BaseGun : MonoBehaviour, IWeaponBase
         FpCamera = transform.parent;
     }
 
+    public void HitObject(GameObject obj)
+    {
+        /*Vector3 startPos = obj.transform.position;
+        Vector3 gulp = obj.transform.position + playerCamera.transform.position;
 
+        Vector3 test = gulp - obj.transform.lossyScale;
+        LeanTween.move(obj, test, .2f).setEaseInBounce().setLoopClamp().setLoopOnce();*/
+        
+    }
+    public void RestPos(GameObject gameObject, Vector3 pos)
+    {
 
-    // Update is called once per frame
+    }
+        
+
 
 }

@@ -39,6 +39,7 @@ public interface IWeaponBase
             if(Physics.Raycast(playerCamera.transform.position, fwd, out hit, weaponRange))
             {
                 BulletTrail(hit);
+                HitObject(hit.transform.gameObject);
             }
             else
             {
@@ -62,4 +63,6 @@ public interface IWeaponBase
         currentAmmo = maxAmmo;
     }
     public void BulletTrail(RaycastHit hit);
+
+    public void HitObject(GameObject obj);
 }
