@@ -1,28 +1,31 @@
 using UnityEngine;
 
-public class BasicAI : MonoBehaviour
+public class BasicAI : MonoBehaviour, IHealth
 {
 
     [Header("Location Params")]
     [SerializeField] private GameObject max, min;
-    private Vector3 minPos, maxPos,targetPos;
+    private Vector3 minPos, maxPos, targetPos;
     [SerializeField] private LayerMask wallMask;
 
     [Header("AI States")]
-    private bool hasTarget,checking;
+    private bool hasTarget, checking;
     [SerializeField] private Vector3 currentVel;
     [SerializeField] private float smoothTime;
 
     [Header("OBS Avoidance")]
     private Vector3 HitPoint;
     private bool obsInWay;
-    [SerializeField] private float timer,maxTimer =10;
+    [SerializeField] private float timer, maxTimer = 10;
+
+
 
     private void Awake()
     {
         minPos = min.transform.position;
         maxPos = max.transform.position;
         FindPosition();
+        currHealth = maxHealth;
     }
     private void Update()
     {
@@ -46,7 +49,7 @@ public class BasicAI : MonoBehaviour
         if (hasTarget)
         {
             float dist = Vector3.Distance(transform.position, targetPos);
-            if(dist <= 2)
+            if (dist <= 2)
             {
                 hasTarget = false;
                 timer = 0;
@@ -54,7 +57,7 @@ public class BasicAI : MonoBehaviour
             }
             else
             {
-                if(timer <= maxTimer)
+                if (timer <= maxTimer)
                 {
                     transform.LookAt(targetPos);
                     transform.position = Vector3.SmoothDamp(transform.position, targetPos, ref currentVel, smoothTime);
@@ -67,16 +70,16 @@ public class BasicAI : MonoBehaviour
                     Invoke("FindPosition", .5f);
                     timer = 0;
                 }
-                
+
 
             }
         }
-        else if(!hasTarget && !checking)
+        else if (!hasTarget && !checking)
         {
             checking = true;
             Invoke("FindPosition", 2);
         }
-       
+
 
     }
     private void FindPosition()
@@ -92,7 +95,7 @@ public class BasicAI : MonoBehaviour
     private void MoveCheck()
     {
         RaycastHit hit;
-        if(Physics.Raycast(this.transform.position, targetPos, out hit, Mathf.Infinity, wallMask))
+        if (Physics.Raycast(this.transform.position, targetPos, out hit, Mathf.Infinity, wallMask))
         {
             FindPosition();
             Debug.Log("Wall Hit Relooking");
@@ -112,4 +115,36 @@ public class BasicAI : MonoBehaviour
         Gizmos.DrawLine(transform.position, targetPos);
         Gizmos.DrawSphere(HitPoint, 2f);
     }
+    #region Health & Damage
+    public float maxHealth;
+    public float MaxHealth { get => maxHealth; }
+
+
+    public float currHealth;
+    public float CurrHealth { get => currHealth; }
+
+    public void Heal(float health)//Makes sure that health cant exceed over max health if healed!
+    {
+       currHealth += health;
+        if (currHealth > maxHealth)
+        {
+            currHealth = maxHealth;
+        }
+    }
+
+    public void Death()
+    {
+        Destroy(gameObject);
+    }
+
+    public void DMGTaken(float health) 
+    {
+        currHealth -= health;
+        Debug.Log("Hit Taken! @" + currHealth);
+        if (currHealth <= 0f)
+        {
+            Death();
+        }
+    }
+    #endregion
 }

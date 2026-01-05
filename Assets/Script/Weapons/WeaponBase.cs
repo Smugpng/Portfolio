@@ -64,5 +64,5 @@ public interface IWeaponBase
     }
     public void BulletTrail(RaycastHit hit);
 
-    public void HitObject(GameObject obj);
+    public void HitObject(GameObject obj); //Not set to deal damage incase I want to add other ways of hitting enemies like, healing for some reason or just doing knockback
 }

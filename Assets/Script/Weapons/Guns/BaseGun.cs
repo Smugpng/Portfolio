@@ -101,11 +101,11 @@ public class BaseGun : MonoBehaviour, IWeaponBase
 
     public void HitObject(GameObject obj)
     {
-        /*Vector3 startPos = obj.transform.position;
-        Vector3 gulp = obj.transform.position + playerCamera.transform.position;
-
-        Vector3 test = gulp - obj.transform.lossyScale;
-        LeanTween.move(obj, test, .2f).setEaseInBounce().setLoopClamp().setLoopOnce();*/
+        IHealth health = obj.GetComponent<IHealth>(); //Checks if object is using the health interface and deals the apropiate amount of damage.
+        if(health != null)
+        {
+            health.DMGTaken(damage);
+        }
         
     }
     public void RestPos(GameObject gameObject, Vector3 pos)

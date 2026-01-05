@@ -17776,6 +17776,7 @@ MonoBehaviour:
   smoothTime: 5
   timer: 0
   maxTimer: 10
+  maxHealth: 20
 --- !u!4 &5762000506289028543 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7842871314025021011, guid: 3631cd4787bbb5449b391523dcaa8424, type: 3}
