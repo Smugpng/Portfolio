@@ -13,7 +13,8 @@ namespace Player
         [SerializeField] FPInteraction FPInteraction;
         [SerializeField] FPTeleport FPTeleport;
         [Header("Weapon")]
-        [SerializeField] private IWeapon currentWeapon;
+        
+        [SerializeField] public IWeapon currentWeapon;
 
         
 
@@ -79,11 +80,13 @@ namespace Player
             if (FPControler == null) FPControler = GetComponent<FPControler>();
             if (FPInteraction == null) FPInteraction = GetComponent<FPInteraction>();
             if(FPTeleport == null) FPTeleport = GetComponent<FPTeleport>();
+            
         }
         private void Start()
         {
             CursorHide();
             currentWeapon = GetComponentInChildren<IWeapon>();
+            Debug.Log($"{currentWeapon.Name}");
         }
         #endregion
 

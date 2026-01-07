@@ -38,31 +38,38 @@ public class IW_Sword : MonoBehaviour, IWeapon
     [Header("Sword Properties")]
     public float attackDistance = 3f;
     public float attackDelay = 1;
-    public GameObject hitEffect;
-    public AudioClip swordSwing, hitSound;
     public bool isAttacking;
     int attackCount;
+
+    [Header("Cosmetic/Audio Properties")]
+    public GameObject hitEffect;
+    public AudioClip swordSwing, hitSound;
+    [SerializeField] private AudioSource audioSource;
 
     private void Awake()
     {
         mainCamera = GetComponentInParent<CinemachineCamera>().transform;
     }
+    //-------------------//
+    //Make Sure to Change//
+    //from a raycast     //
+    //To an animation w  //
+    // Collision         //
+    //-------------------//
     public void Attack()
     {
-
-        if (canSwing && !isAttacking)
+        Debug.Log("Sup");
+        if (canSwing)
         {
             canSwing = false;
-            test.SetActive(true);
             isAttacking = true;
             Debug.Log("Swinging Sword!");
 
             Invoke(nameof(DelayBetweenShots), timeBetweenSwings);
-            Invoke(nameof(AttackRaycast), attackDelay);
-            Debug.Break();
-            DelayBetweenShots();
-            //audioSource.pitch = Random.Range(0.9f,1.1f);
-            //audioSource.PlayOneShot(swordSwing);
+            //CHANGE BELOW TO ANIMATIONS
+            //Invoke(nameof(AttackRaycast), attackDelay);
+            audioSource.pitch = Random.Range(0.9f,1.1f);
+            audioSource.PlayOneShot(swordSwing);
         }
         else
         {
@@ -75,7 +82,6 @@ public class IW_Sword : MonoBehaviour, IWeapon
         canSwing = true;
         isAttacking = false;
         Debug.Log("Can Swing");
-        test.SetActive(false);
     }
 
     public void AttackRaycast()
@@ -89,10 +95,12 @@ public class IW_Sword : MonoBehaviour, IWeapon
     }
     public void HitObject(GameObject target)
     {
-        throw new System.NotImplementedException();
+        if (isAttacking)
+        {
+            target.GetComponent<IHealth>().DMGTaken(damage);
+        }
     }
     public float drawDistance = 2;
-    public GameObject test;
 
     public void Reload()
     {
