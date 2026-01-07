@@ -13,7 +13,7 @@ namespace Player
         [SerializeField] FPInteraction FPInteraction;
         [SerializeField] FPTeleport FPTeleport;
         [Header("Weapon")]
-        [SerializeField] private IWeaponBase currentWeapon;
+        [SerializeField] private IWeapon currentWeapon;
 
         
 
@@ -58,17 +58,17 @@ namespace Player
             }
             else
             {
-                currentWeapon.Shoot();
+                currentWeapon.Attack();
             }
         }
         void OnSwap(InputValue value)
         {
-            currentWeapon = GetComponentInChildren<IWeaponBase>();
+            currentWeapon = GetComponentInChildren<IWeapon>();
             Debug.Log(currentWeapon.Name);
         }
         void OnReload(InputValue value)
         {
-            currentWeapon.Reload();
+            //currentWeapon.re();
         }
 
         #endregion
@@ -83,7 +83,7 @@ namespace Player
         private void Start()
         {
             CursorHide();
-            currentWeapon = GetComponentInChildren<IWeaponBase>();
+            currentWeapon = GetComponentInChildren<IWeapon>();
         }
         #endregion
 
