@@ -45,6 +45,7 @@ public class IW_Sword : MonoBehaviour, IWeapon
     public GameObject hitEffect;
     public AudioClip swordSwing, hitSound;
     [SerializeField] private AudioSource audioSource;
+    [SerializeField] private Animator swordAnim;
 
     private void Awake()
     {
@@ -68,6 +69,7 @@ public class IW_Sword : MonoBehaviour, IWeapon
             Invoke(nameof(DelayBetweenShots), timeBetweenSwings);
             //CHANGE BELOW TO ANIMATIONS
             //Invoke(nameof(AttackRaycast), attackDelay);
+            swordAnim.SetTrigger("Attack");
             audioSource.pitch = Random.Range(0.9f,1.1f);
             audioSource.PlayOneShot(swordSwing);
         }

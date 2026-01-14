@@ -16404,6 +16404,7 @@ MonoBehaviour:
   swordSwing: {fileID: 8300000, guid: 834975d68a2fbd5419365de124040fb7, type: 3}
   hitSound: {fileID: 8300000, guid: 0a80d79b9928b8d40a1b82b50ccebe5d, type: 3}
   audioSource: {fileID: 1737421668}
+  swordAnim: {fileID: 2036471764}
   drawDistance: 0.92
 --- !u!82 &1737421668
 AudioSource:
