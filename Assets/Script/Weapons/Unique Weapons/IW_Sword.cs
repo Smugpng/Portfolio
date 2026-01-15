@@ -51,12 +51,7 @@ public class IW_Sword : MonoBehaviour, IWeapon
     {
         mainCamera = GetComponentInParent<CinemachineCamera>().transform;
     }
-    //-------------------//
-    //Make Sure to Change//
-    //from a raycast     //
-    //To an animation w  //
-    // Collision         //
-    //-------------------//
+    // CHANGE TO USE A SPHERE CAST DURING ATTACKING!!!
     public void Attack()
     {
         Debug.Log("Sup");
