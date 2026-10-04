@@ -63,12 +63,11 @@ namespace Player
             }
             
         }
-        /*
+        
         void OnSwap(InputValue value)
         {
-            currentWeapon = GetComponentInChildren<IWeapon>();
-            Debug.Log(currentWeapon.Name);
-        }
+            Blinking.instance.StartBlink();
+        }/*
         void OnReload(InputValue value)
         {
             //currentWeapon.re();
