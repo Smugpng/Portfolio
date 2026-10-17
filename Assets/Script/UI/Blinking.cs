@@ -17,6 +17,7 @@ public class Blinking : MonoBehaviour
 
     public void BlinkCompleted()
     {
+        FPControler.instance.Teleport();
         if (postProcess.activeInHierarchy != true)
         {
             postProcess.gameObject.SetActive(true);
@@ -25,6 +26,10 @@ public class Blinking : MonoBehaviour
         {
             postProcess.gameObject.SetActive(false);
         }
+    }
+    public void TELEPORT()
+    {
+        
     }
     public void StartBlink()
     {

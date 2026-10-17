@@ -104,6 +104,7 @@ namespace Player
             {
                 instance = this;
             }
+            isDreaming = false;
         }
         private void OnValidate()
         {
@@ -190,7 +191,23 @@ namespace Player
             }
         }
         #endregion
-
+        bool isDreaming;
+        public void Teleport()
+        {
+            isDisabled = true;
+            if (!isDreaming)
+            {
+                gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + 10000, gameObject.transform.position.z);
+                isDreaming = true;
+            }
+            else
+            {
+                gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y - 10000, gameObject.transform.position.z);
+                isDreaming = false;
+            }
+            Invoke("Enable", .2f);
+        }
+        
         private void MoveUpdate()
         {
             if(isDisabled) return;
