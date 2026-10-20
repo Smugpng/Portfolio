@@ -20,11 +20,11 @@ public class Blinking : MonoBehaviour
         FPControler.instance.Teleport();
         if (postProcess.activeInHierarchy != true)
         {
-            postProcess.gameObject.SetActive(true);
+            //postProcess.gameObject.SetActive(true);
         }
         else
         {
-            postProcess.gameObject.SetActive(false);
+            //postProcess.gameObject.SetActive(false);
         }
     }
     public void TELEPORT()

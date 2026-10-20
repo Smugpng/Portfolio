@@ -28,7 +28,6 @@ public class CameraFade : MonoBehaviour
         if (isfade)
         {
             canvasGroup.alpha += fadeAmount;
-            Debug.Log("FADIOG");
         }
         else
         {
@@ -41,11 +40,10 @@ public class CameraFade : MonoBehaviour
     {
         fadeAmount = -.05f;
         isfade = true;
-        Debug.Log("Negative Fade");
+
     }
     public void FadeOut()
     {
-        Debug.Log("Postitive Fade");
         fadeAmount = .05f;
         isfade = true;
     }

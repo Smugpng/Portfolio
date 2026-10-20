@@ -97,6 +97,10 @@ namespace Player
         [Header("Detection")]
         [SerializeField] private float rayLength;
 
+        [Header("Fading Tech")]
+        private float lastFade, alpha;
+        [SerializeField] private Material lightSkyBox, darkSkyBox;
+
         #region Unity Methods
         private void Awake()
         {
@@ -197,17 +201,38 @@ namespace Player
             isDisabled = true;
             if (!isDreaming)
             {
-                gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + 10000, gameObject.transform.position.z);
+                gameObject.transform.position = new Vector3(gameObject.transform.position.x,
+                    gameObject.transform.position.y + 10000, gameObject.transform.position.z);
                 isDreaming = true;
+                RenderSettings.skybox = darkSkyBox;
+                FogFade(.3f);
+                
             }
             else
             {
-                gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y - 10000, gameObject.transform.position.z);
+                gameObject.transform.position = new Vector3(gameObject.transform.position.x,
+                    gameObject.transform.position.y - 10000, gameObject.transform.position.z);
                 isDreaming = false;
+                RenderSettings.skybox = lightSkyBox;
+                FogFade(.01f);
             }
+            Debug.Log(RenderSettings.fogDensity);   
             Invoke("Enable", .2f);
         }
+        #region Fade and Skybox
         
+        private void FogFade(float fadeTo)
+        {
+            
+            if (LeanTween.isTweening(this.gameObject))
+            {
+                LeanTween.cancel(this.gameObject);
+                RenderSettings.fogDensity = lastFade;
+            }
+            LeanTween.value(gameObject, RenderSettings.fogDensity, fadeTo, 1f).setOnUpdate((float val) => {RenderSettings.fogDensity = val;});
+            lastFade = fadeTo;
+        }
+        #endregion
         private void MoveUpdate()
         {
             if(isDisabled) return;
