@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 namespace Player
@@ -13,14 +14,21 @@ namespace Player
         [SerializeField] FPInteraction FPInteraction;
         [SerializeField] FPTeleport FPTeleport;
         //[Header("Weapon")]
-        
-        //[SerializeField] public IWeapon currentWeapon;
 
-        
+        //[SerializeField] public IWeapon currentWeapon;
+        [Header("Events")]
+        public UnityEvent JumpInput, PauseInput, AttackInput;
+
+        private void Awake()
+        {
+            
+        }
+      
 
         #region Input
         void OnMove(InputValue value)
         {
+
             FPControler.moveInput = value.Get<Vector2>();
         }
         void OnLook(InputValue value)

@@ -64,6 +64,7 @@ namespace Player
 
         [Header("Events")]
         public UnityEvent Landed;
+        public UnityEvent teleport;
         public bool isDisabled;
 
         [Header("Camera Param")]
@@ -97,9 +98,6 @@ namespace Player
         [Header("Detection")]
         [SerializeField] private float rayLength;
 
-        [Header("Fading Tech")]
-        private float lastFade, alpha;
-        [SerializeField] private Material lightSkyBox, darkSkyBox;
 
         #region Unity Methods
         private void Awake()
@@ -109,6 +107,12 @@ namespace Player
                 instance = this;
             }
             isDreaming = false;
+
+            AddEventListeners();
+        }
+        private void AddEventListeners()
+        {
+
         }
         private void OnValidate()
         {
@@ -195,44 +199,20 @@ namespace Player
             }
         }
         #endregion
-        bool isDreaming;
+
+
+        public bool isDreaming;
         public void Teleport()
         {
             isDisabled = true;
-            if (!isDreaming)
-            {
-                gameObject.transform.position = new Vector3(gameObject.transform.position.x,
-                    gameObject.transform.position.y + 10000, gameObject.transform.position.z);
-                isDreaming = true;
-                RenderSettings.skybox = darkSkyBox;
-                FogFade(.3f);
-                
-            }
-            else
-            {
-                gameObject.transform.position = new Vector3(gameObject.transform.position.x,
-                    gameObject.transform.position.y - 10000, gameObject.transform.position.z);
-                isDreaming = false;
-                RenderSettings.skybox = lightSkyBox;
-                FogFade(.01f);
-            }
-            Debug.Log(RenderSettings.fogDensity);   
+            teleport.Invoke();
+
             Invoke("Enable", .2f);
         }
-        #region Fade and Skybox
-        
-        private void FogFade(float fadeTo)
+        public void UpdateMoveInputs(Vector2 inputs)
         {
-            
-            if (LeanTween.isTweening(this.gameObject))
-            {
-                LeanTween.cancel(this.gameObject);
-                RenderSettings.fogDensity = lastFade;
-            }
-            LeanTween.value(gameObject, RenderSettings.fogDensity, fadeTo, 1f).setOnUpdate((float val) => {RenderSettings.fogDensity = val;});
-            lastFade = fadeTo;
+            moveInput = inputs;
         }
-        #endregion
         private void MoveUpdate()
         {
             if(isDisabled) return;
