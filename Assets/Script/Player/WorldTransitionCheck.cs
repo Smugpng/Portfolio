@@ -5,7 +5,7 @@ using UnityEngine.ProBuilder.Shapes;
 public class WorldTransitionCheck : MonoBehaviour
 {
     public GameObject player;
-    public enum WorldState
+    public enum WorldState //Player world states
     {
         Real,
         Dream,
@@ -29,7 +29,7 @@ public class WorldTransitionCheck : MonoBehaviour
     [SerializeField] private LayerMask walls;
 
     private Vector3 nextLocation;
-    private bool canSwap()
+    public bool canSwap() //Checks teleport location based off world state returns true if can teleport
     {
         
         if (CurrentState == WorldState.Dream)
@@ -50,9 +50,8 @@ public class WorldTransitionCheck : MonoBehaviour
 
     
 
-    public void SwapWorlds()
+    public void SwapWorlds() //Teleports to uppder and lower worlds based of world state
     {
-        if (!canSwap()) return;
         if(CurrentState == WorldState.Dream)
         {
             player.transform.position = new Vector3(player.transform.position.x,player.transform.position.y - 10000, player.transform.position.z);
@@ -66,11 +65,7 @@ public class WorldTransitionCheck : MonoBehaviour
             WorldShifting.instance.ToDreamWorld();
         }
     }
-    private void Update()
-    {
-        Debug.Log(canSwap());
-    }
-    private void OnDrawGizmos()
+    /* private void OnDrawGizmos()
     {
         if(canSwap())
         {
@@ -82,5 +77,5 @@ public class WorldTransitionCheck : MonoBehaviour
         }
         
         Gizmos.DrawSphere(nextLocation, .5f);
-    }
+    } */
 }

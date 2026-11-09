@@ -6,6 +6,7 @@ public class Blinking : MonoBehaviour
     public static Blinking instance;
     [SerializeField] private Animator Animator;
     [SerializeField] private GameObject postProcess;
+    private FPControler playerCon;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -13,11 +14,12 @@ public class Blinking : MonoBehaviour
         {
             instance = this;
         }
+        playerCon = FPControler.instance;
     }
 
     public void BlinkCompleted()
     {
-        FPControler.instance.Teleport();
+        playerCon.Teleport();
         if (postProcess.activeInHierarchy != true)
         {
             //postProcess.gameObject.SetActive(true);

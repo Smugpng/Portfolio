@@ -50,8 +50,5 @@ public class WorldShifting : MonoBehaviour
         if (isDreaming) ToDreamWorld();
         else ToRealWorld();
     }
-    private void Update()
-    {
-        Debug.Log(RenderSettings.fogDensity);
-    }
+
 }

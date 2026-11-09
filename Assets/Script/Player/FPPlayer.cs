@@ -13,11 +13,12 @@ namespace Player
         [SerializeField] FPControler FPControler;
         [SerializeField] FPInteraction FPInteraction;
         [SerializeField] FPTeleport FPTeleport;
+        [SerializeField] WorldTransitionCheck worldTransCheck;
         //[Header("Weapon")]
 
         //[SerializeField] public IWeapon currentWeapon;
         [Header("Events")]
-        public UnityEvent JumpInput, PauseInput, AttackInput;
+        public UnityEvent JumpInput, PauseInput, AttackInput ,blinkFail,blinkSuccess;
 
         private void Awake()
         {
@@ -74,12 +75,17 @@ namespace Player
         
         void OnSwap(InputValue value)
         {
-            Blinking.instance.StartBlink();
-        }/*
-        void OnReload(InputValue value)
-        {
-            //currentWeapon.re();
-        }*/
+            if (!worldTransCheck.canSwap())
+            {
+                blinkFail.Invoke();
+            }
+            else
+            {
+                blinkSuccess.Invoke();
+                Blinking.instance.StartBlink();
+            }
+            
+        }
 
         #endregion
 
@@ -94,8 +100,7 @@ namespace Player
         private void Start()
         {
             CursorHide();
-            //currentWeapon = GetComponentInChildren<IWeapon>();
-            //Debug.Log($"{currentWeapon.Name}");
+
         }
         #endregion
 
